@@ -82,7 +82,7 @@ mod 'stackforge/ironic',
   :ref => 'origin/master'
 
 mod 'puppetlabs/concat',
-  :git => "#{base_url}/puppetlabs/puppetlabs-concat",
+  :git => "#{base_url}/jiocloudcompute/puppetlabs-concat",
   :ref => '1.1.1'
 
 mod 'enovance/ceph',
