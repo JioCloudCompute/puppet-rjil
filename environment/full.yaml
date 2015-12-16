@@ -12,6 +12,12 @@ resources:
     image: trusty
     networks: default
     boot_volume: default_volume
+  staging-clb:
+    number: 1
+    flavor: medium
+    image: trusty
+    networks: default
+    boot_volume: default_volume
   oc:
     number: 1
     flavor: large
@@ -25,6 +31,18 @@ resources:
     networks: default
     boot_volume: default_volume
     assign_floating_ip: true
+  staging-cc:
+    number: 2
+    flavor: medium
+    image: trusty
+    networks: default
+    boot_volume: default_volume
+  staging-csdb:
+    number: 1
+    flavor: large
+    image: trusty
+    networks: default
+    boot_volume: default_volume
   ct:
     number: 1
     flavor: large

@@ -1,0 +1,9 @@
+rjil::db::dbs:
+  nova:
+    user: "%{hiera('nova_db_user')}"
+    pass: "%{hiera('nova_db_password')}"
+  glance:
+    user: "%{hiera('glance_db_user')}"
+    pass: "%{hiera('glance_db_password')}"
+rjil::keystone::disable_db_sync: false
+rjil::db::mysql_service_name: "mysql_compute"

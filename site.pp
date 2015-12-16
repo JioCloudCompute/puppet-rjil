@@ -91,10 +91,9 @@ node /^oc\d+/ {
   include rjil::memcached
   include rjil::keystone
   include openstack_extras::client
+  include rjil::ceph
   include rjil::cinder
-  include rjil::glance
   include rjil::openstack_zeromq
-  include rjil::nova::controller
 }
 
 #
@@ -107,30 +106,32 @@ node /^ocdb\d+/ {
   include openstack_extras::client
   include rjil::db
   include rjil::keystone
+  include rjil::ceph
   include rjil::cinder
-  include rjil::glance
-  include rjil::nova::controller
   include rjil::openstack_zeromq
   include rjil::openstack_objects
 }
 
 #
-# A variation of the controller that also runs a load balancer
+# compute controller with nova and glance services
 #
 
-node /^oclb\d+/ {
+node /^staging-cc\d+/ {
   include rjil::base
-  include openstack_extras::client
   include rjil::memcached
-  include rjil::db
-  include rjil::keystone
-  include rjil::cinder
+  include openstack_extras::client
   include rjil::glance
   include rjil::openstack_zeromq
-  include openstack_extras::keystone_endpoints
-  include rjil::keystone::test_user
-  include rjil::haproxy
-  include rjil::haproxy::openstack
+  include rjil::nova::controller
+}
+
+#
+# compute services db
+#
+node /^staging-csdb\d+/ {
+  include rjil::base
+  include rjil::memcached
+  include rjil::db
 }
 
 ##
@@ -167,38 +168,8 @@ node /^haproxy\d+/ {
   include rjil::haproxy::openstack
 }
 
-node /^uc\d+/ {
-  include rjil::base
-  include rjil::memcached
-  include rjil::rabbitmq
-  include openstack_extras::client
-  include rjil::db
-  include rjil::keystone
-  include rjil::glance
-  include rjil::neutron::ovs
-  include rjil::neutron::network::undercloud
-  include rjil::ironic
-  include rjil::nova::controller
-  include rjil::openstack_zeromq
-  include rjil::openstack_objects
-  include rjil::nova::compute
-  include rjil::jiocloud::dhcp
-
-  Class['rjil::db'] -> Rjil::Service_blocker['neutron']
-  Class['rjil::db'] -> Rjil::Service_blocker['glance']
-  Class['rjil::neutron::ovs'] -> Rjil::Service_blocker['neutron']
-  Service['httpd'] -> Rjil::Service_blocker['neutron']
-
-  Service['httpd'] -> Rjil::Service_blocker['glance']
-
-  #include rjil::jiocloud::aptmirror
-}
-
-node /^httpproxy\d+/ {
-  include rjil::base
-  include rjil::http_proxy
-  dnsmasq::conf { 'google':
-    ensure  => present,
-    content => 'server=8.8.8.8',
-  }
+node /^staging-clb\d+/ {
+  #include rjil::base
+  #include rjil::haproxy
+  #include rjil::haproxy::openstack
 }

@@ -12,6 +12,7 @@ class rjil::db (
   $mysql_max_connections = 1024,
   $mysql_data_disk = undef,
   $dbs = {},
+  $mysql_service_name = 'mysql',
   $bind_address = '0.0.0.0',
 )  {
 
@@ -19,7 +20,6 @@ class rjil::db (
   ## Setup test code
 
   rjil::test { 'mysql.sh': }
-
   ## Call db_def to create databases, users and grants
   create_resources('rjil::db::instance', $dbs)
   ## setup mysql server
@@ -123,7 +123,7 @@ class rjil::db (
     require    => Mysql_user["monitor@${user_address}"],
   }
 
-  rjil::jiocloud::consul::service { "mysql":
+  rjil::jiocloud::consul::service { $mysql_service_name:
     port          => 3306,
     check_command => "/usr/lib/nagios/plugins/check_mysql -H ${bind_address} -u monitor -p monitor"
   }

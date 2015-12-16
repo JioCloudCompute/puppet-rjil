@@ -23,25 +23,6 @@ private_interface: "%{interface_10_0_0_0_16}"
 ###################################
 
 rjil::db::bind_address: "%{hiera('private_address')}"
-rjil::db::dbs:
-  nova:
-    user: "%{hiera('nova_db_user')}"
-    pass: "%{hiera('nova_db_password')}"
-  keystone:
-    user: "%{hiera('keystone_db_user')}"
-    pass: "%{hiera('keystone_db_password')}"
-  cinder:
-    user: "%{hiera('cinder_db_user')}"
-    pass: "%{hiera('cinder_db_password')}"
-  glance:
-    user: "%{hiera('glance_db_user')}"
-    pass: "%{hiera('glance_db_password')}"
-  ironic:
-    user: "%{hiera('ironic_db_user')}"
-    pass: "%{hiera('ironic_db_password')}"
-  neutron:
-    user: "%{hiera('neutron_db_user')}"
-    pass: "%{hiera('neutron_db_password')}"
 
 # Gets overridden for ocdb role
 rjil::keystone::disable_db_sync: true
@@ -101,6 +82,7 @@ ironic_internal_address: ironic.jiocloud.com
 
 admin_email: cloud.devops@ril.com
 db_host: mysql.service.consul
+db_host_compute: mysql_compute.service.consul
 debug: 'true'
 verbose: 'true'
 region: RegionOne
@@ -220,7 +202,7 @@ glance::api::auth_host: "%{hiera('keystone_public_address')}"
 glance::api::auth_protocol: "%{hiera('rjil::keystone::protocol')}"
 glance::api::auth_uri: "%{hiera('rjil::keystone::protocol')}://%{hiera('glance::api::auth_host')}:%{hiera('keystone_port')}/%{hiera('rjil::keystone::version')}"
 glance::api::keystone_password: "%{hiera('glance::keystone::auth::password')}"
-glance::api::database_connection: "mysql://%{hiera('glance_db_user')}:%{hiera('glance_db_password')}@%{hiera('db_host')}/glance"
+glance::api::database_connection: "mysql://%{hiera('glance_db_user')}:%{hiera('glance_db_password')}@%{hiera('db_host_compute')}/glance"
 glance::api::mysql_module: 2.3
 
 glance::registry::debug: "%{hiera('debug')}"
@@ -351,7 +333,7 @@ rjil::nova::controller::headers:
 nova::rpc_backend: "%{hiera('rpc_backend')}"
 nova::glance_api_servers: "%{hiera('api_protocol')}://%{hiera('glance_public_address')}:%{hiera('glance::keystone::auth::public_port')}"
 nova::glance_protocol: "%{hiera('api_protocol')}"
-nova::database_connection: "mysql://%{hiera('nova_db_user')}:%{hiera('nova_db_password')}@%{hiera('db_host')}/nova"
+nova::database_connection: "mysql://%{hiera('nova_db_user')}:%{hiera('nova_db_password')}@%{hiera('db_host_compute')}/nova"
 nova::mysql_module: 2.3
 nova::debug: "%{hiera('debug')}"
 nova::verbose: "%{hiera('verbose')}"

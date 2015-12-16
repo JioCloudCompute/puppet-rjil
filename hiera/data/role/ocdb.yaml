@@ -1,2 +1,15 @@
+rjil::db::dbs:
+  keystone:
+    user: "%{hiera('keystone_db_user')}"
+    pass: "%{hiera('keystone_db_password')}"
+  cinder:
+    user: "%{hiera('cinder_db_user')}"
+    pass: "%{hiera('cinder_db_password')}"
+  ironic:
+    user: "%{hiera('ironic_db_user')}"
+    pass: "%{hiera('ironic_db_password')}"
+  neutron:
+    user: "%{hiera('neutron_db_user')}"
+    pass: "%{hiera('neutron_db_password')}"
 rjil::keystone::disable_db_sync: false
 rjil::jiocloud::consul_role: server
